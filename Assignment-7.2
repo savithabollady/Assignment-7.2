@@ -15,3 +15,19 @@ ggplot(data=mtcars)+
   geom_point(mapping=aes(x=gear,y=hp))
 
 3. Write a program to create a plot density by class variable.
+str(mtcars)
+m<- mtcars[,c(1:12)]
+head(m)
+summary(m)
+aggregate(mpg~am, data=m, FUN=function(x){NROW(x)})
+aggregate(mpg~am, data=m, mean)
+x <- m$mpg
+h<-hist(x, breaks=10, col="red", xlab="Miles Per Gallon",
+        main="Histogram Of MPG")
+xfit<-seq(min(x),max(x),length=40)
+yfit<-dnorm(xfit,mean=mean(x),sd=sd(x))
+yfit <- yfit*diff(h$mids[1:2])*length(x)
+lines(xfit, yfit, col="blue", lwd=2)
+# Kernel Density Plot
+d <- density(m$mpg)
+plot(d, xlab="MPG", main ="Density Of MPG")
